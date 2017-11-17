@@ -99,6 +99,48 @@
   </div>
 
 <script>
+  // My solution:
+  const checkboxes = Array.from(document.querySelectorAll("input[type='checkbox']"));
+  let lastChecked;
+
+  checkboxes.forEach((checkbox, i) => {
+    checkbox.addEventListener('mousedown', (e) => {
+      if (e.shiftKey && lastChecked && checkboxes[lastChecked].checked) {
+        if (i > lastChecked) {
+          checkboxes.slice(lastChecked,i).forEach(box => box.checked = true);
+        } else {
+          checkboxes.slice(i+1,lastChecked).forEach(box => box.checked = true);
+        }
+      }
+      lastChecked = i;
+    })
+  })
+
+  // Wes Bos' solution:
+  // const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
+  //
+  // let lastChecked;
+  // // Check if shift key is down AND check that box is being checked, not unchecked
+  // function handleCheck(e) {
+  //   let inBetween = false;
+  //   if (e.shiftKey && this.checked) {
+  //     // Loop over every checkbox
+  //     checkboxes.forEach(checkbox => {
+  //       if (checkbox === this || checkbox === lastChecked) {
+  //         inBetween = !inBetween;
+  //       }
+  //
+  //       if (inBetween) {
+  //         checkbox.checked = true;
+  //       }
+  //     })
+  //   }
+  //
+  //   lastChecked = this;
+  // }
+  //
+  // checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck));
+
 </script>
 </body>
 </html>
