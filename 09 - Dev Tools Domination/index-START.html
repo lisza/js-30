@@ -18,28 +18,68 @@
     }
 
     // Regular
+    console.log("regular log hello");
 
-    // Interpolated
+    // Interpolated with %s
+    console.log("Hello I am a %s string", "INTERPOLATED");
 
-    // Styled
+    // Styled with %c
+    console.log("%c I am some great text", "font-size:50px; background:red");
 
     // warning!
+    console.warn("OH NO WARNING");
 
     // Error :|
+    console.error("Error display with stacktrace");
 
-    // Info
+    // Info... does this even work?
+    console.info("Crocodiles eat 3-4 people per year");
 
-    // Testing
+    // Testing (only fires if something is wrong. the statement is wrong)
+    console.assert(1 === 1, "That is wrong!");
+
+    const p = document.querySelector('p');
+    console.assert(p.classList.contains('ouch'), "That is wrong!");
 
     // clearing
+    console.clear();
 
     // Viewing DOM Elements
+    console.log(p);
+    console.dir(p); // "dir" shows you everything about the element, children etc
 
     // Grouping together
+    dogs.forEach(dog => {
+      console.groupCollapsed(`${dog.name}`);
+        console.log(`This is ${dog.name}`);
+        console.log(`${dog.name} is ${dog.age}`);
+        console.log(`${dog.name} is ${dog.age * 7} dog years old.`);
+      console.groupEnd(`${dog.name}`);
+    })
 
     // counting
+    console.count('Lisza');
+    console.count('Lisza');
+    console.count('Lisza');
+    console.count('Josh');
+    console.count('Josh');
+    console.count('Josh');
+    console.count('Lisza');
+    console.count('Lisza');
+    console.count('Josh');
 
-    // timing
+    // timing Displays time it took to do something
+    console.time('Fetching data');
+    fetch('https://api.github.com/users/lisza')
+      .then(data => data.json())
+      .then(data => {
+        console.timeEnd('Fetching data');
+        console.log(data);
+      });
+
+    console.time('Multiply some numbers');
+      console.log(3456 * 3453333);
+    console.timeEnd('Multiply some numbers');
 
   </script>
 </body>
