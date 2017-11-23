@@ -6,7 +6,20 @@
   <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
 </head>
 <body>
+  
 <script>
+  const keysPressed = [];
+  const secretCode = 'lisza';
+  
+  window.addEventListener('keyup', e => {
+    keysPressed.push(e.key);
+    keysPressed.splice(-secretCode.length - 1, keysPressed.length - secretCode.length)
+    if (keysPressed.join('').includes(secretCode)) {
+      console.log("Wooooo!!!");
+      cornify_add(); // OMG this is great!
+    }  
+    console.log(keysPressed);
+  })
 </script>
 </body>
 </html>
