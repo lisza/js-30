@@ -36,12 +36,12 @@
     e.preventDefault(); 
     const text = (this.querySelector('[name=item]')).value; // 'this' is the whole form element here because we listened on .addItems
     const item = {
-      text: text, // or jsut text, cos of ES6 destructuring
+      text: text, // or just text, cos of ES6 destructuring
       done: false
     };
     items.push(item);
     populateList(items, itemsList);
-    //localStorageis a key-value store and you can only use strings, no object.
+    //localStorage is a key-value store and you can only use strings, no object.
     // It'll turn everything into a .toString. So we need to stringify it first.
     localStorage.setItem('items', JSON.stringify(items))
     
@@ -67,7 +67,10 @@
     items[index].done = !items[index].done; 
     
     localStorage.setItem('items', JSON.stringify(items))
-    populateList(items, itemsList); // Is the re-render here necessary? 
+    // populateList(items, itemsList); // Is the re-render here necessary?
+    // Selective rerendering of affected checkbox only:
+    const item = document.querySelector(`#item${index}`)
+    item.outerHTML = `<input type="checkbox" data-index=${index} id="item${index}" ${items[index].done ? 'checked' : ''} />`;
   }
 
   addItems.addEventListener('submit', addItem);
