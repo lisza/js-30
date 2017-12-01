@@ -59,6 +59,11 @@
     }).join(''); // join to make it a string from map array, since innerHTML takes a string
   }
   
+  function renderCheckbox(index) {
+    const item = document.querySelector(`#item${index}`)
+    item.outerHTML = `<input type="checkbox" data-index=${index} id="item${index}" ${items[index].done ? 'checked' : ''} />`;
+  }
+  
   function toggleDone(e) {
     if (!e.target.matches('input')) return; // skip unless it is an input element
     const el = e.target;
@@ -69,8 +74,7 @@
     localStorage.setItem('items', JSON.stringify(items))
     // populateList(items, itemsList); // Is the re-render here necessary?
     // Selective rerendering of affected checkbox only:
-    const item = document.querySelector(`#item${index}`)
-    item.outerHTML = `<input type="checkbox" data-index=${index} id="item${index}" ${items[index].done ? 'checked' : ''} />`;
+    renderCheckbox(index);
   }
 
   addItems.addEventListener('submit', addItem);
