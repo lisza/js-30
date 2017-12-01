@@ -23,13 +23,22 @@
       <input type="text" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
     </form>
+    <button type="button" name="check" value="true">Check All</button>
+    <button type="button" name="uncheck" value="false">Uncheck All</button>
+    <button type="button" name="clear">Clear All</button>
   </div>
 
 <script>
+//-------- Get DOM Elements -------------------
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = JSON.parse(localStorage.getItem('items')) || [];
+  let items = JSON.parse(localStorage.getItem('items')) || [];
   
+  const checkItems = document.querySelector('[name=check]');
+  const uncheckItems = document.querySelector('[name=uncheck]');
+  const clearItems = document.querySelector('[name=clear]');
+
+//-------- Functions --------------------------  
   function addItem(e) {
     // Stops the page from reloading or sending the data to an external
     // source on submit event
@@ -59,7 +68,8 @@
     itemsList.appendChild(newItem);
   }
   
-  function populateList(plates = [], platesList) {
+  // , platesList
+  function populateList(plates = []) {
     plates.forEach((item, i) => {
       renderItem(item, i);
     })
@@ -76,7 +86,9 @@
   
   function renderCheckbox(index) {
     const item = document.querySelector(`#item${index}`)
-    item.outerHTML = `<input type="checkbox" data-index=${index} id="item${index}" ${items[index].done ? 'checked' : ''} />`;
+    if (item) {
+      item.outerHTML = `<input type="checkbox" data-index=${index} id="item${index}" ${items[index].done ? 'checked' : ''} />`;
+    }
   }
   
   function toggleDone(e) {
@@ -86,17 +98,37 @@
     //toggle: set .done proprty to the opposite of what it was on click
     items[index].done = !items[index].done; 
     
-    localStorage.setItem('items', JSON.stringify(items))
+    localStorage.setItem('items', JSON.stringify(items));
     // populateList(items, itemsList); // Is the re-render here necessary?
     // Instead, selective rerendering of affected checkbox only:
     renderCheckbox(index);
   }
+  
+  function clearAllItems() {
+    localStorage.removeItem('items');
+    items = [];
+    itemsList.innerHTML = "";
+  }
+  
+  function toggleCheckAll(e) {
+    const boolean = (e.target.value === 'true');
+    items.forEach((item, i) => {
+      item.done = boolean;
+      localStorage.setItem('items', JSON.stringify(items));
+      renderCheckbox(i);
+    })
+  }
 
+//-------- Event Listeners, function calls -------------------
   addItems.addEventListener('submit', addItem);
   // Event delegation: listen on a click on a higher element, then check if the event.target
   // is what we want to trigger on.
   itemsList.addEventListener('click', toggleDone);
-  populateList(items, itemsList);
+  clearItems.addEventListener('click', clearAllItems);
+  checkItems.addEventListener('click', toggleCheckAll);
+  uncheckItems.addEventListener('click', toggleCheckAll);
+  
+  populateList(items);
 
 </script>
 
