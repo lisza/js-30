@@ -17,7 +17,7 @@
     <h2>LOCAL TAPAS</h2>
     <p></p>
     <ul class="plates">
-      <li>Loading Tapas...</li>
+      <!-- <li>Loading Tapas...</li> -->
     </ul>
     <form class="add-items">
       <input type="text" name="item" placeholder="Item Name" required>
@@ -40,7 +40,9 @@
       done: false
     };
     items.push(item);
-    populateList(items, itemsList);
+    
+    // Render new items selectively without recreating the whole list each time
+    renderItem(item, items.length - 1);
     //localStorage is a key-value store and you can only use strings, no object.
     // It'll turn everything into a .toString. So we need to stringify it first.
     localStorage.setItem('items', JSON.stringify(items))
@@ -48,15 +50,28 @@
     this.reset(); // resets form input
   }
   
+  function renderItem(item, i) {
+    const newItem = document.createElement('li');
+    newItem.innerHTML = `
+        <input type="checkbox" data-index=${i} id="item${i}" ${item.done ? 'checked' : ''} />
+        <label for="item${i}">${item.text}</label>
+      `
+    itemsList.appendChild(newItem);
+  }
+  
   function populateList(plates = [], platesList) {
-    platesList.innerHTML = plates.map((plate, i) => {
-      return `
-        <li>
-          <input type="checkbox" data-index=${i} id="item${i}" ${plate.done ? 'checked' : ''} />
-          <label for="item${i}">${plate.text}</label>
-        </li>
-      `;
-    }).join(''); // join to make it a string from map array, since innerHTML takes a string
+    plates.forEach((item, i) => {
+      renderItem(item, i);
+    })
+    // Wes Bos' version:
+    // platesList.innerHTML = plates.map((plate, i) => {
+    //   return `
+    //     <li>
+    //       <input type="checkbox" data-index=${i} id="item${i}" ${plate.done ? 'checked' : ''} />
+    //       <label for="item${i}">${plate.text}</label>
+    //     </li>
+    //   `;
+    // }).join(''); // join to make it a string from map array, since innerHTML takes a string
   }
   
   function renderCheckbox(index) {
@@ -73,7 +88,7 @@
     
     localStorage.setItem('items', JSON.stringify(items))
     // populateList(items, itemsList); // Is the re-render here necessary?
-    // Selective rerendering of affected checkbox only:
+    // Instead, selective rerendering of affected checkbox only:
     renderCheckbox(index);
   }
 
