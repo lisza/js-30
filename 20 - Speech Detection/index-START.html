@@ -11,7 +11,47 @@
 
 <script>
   window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
+  
+  const recognition = new SpeechRecognition();
+  // Continuously populate results
+  recognition.interimResults = true;
+  
+  // Create new paragraph after speaking pause
+  let p = document.createElement('p');
+  const words = document.querySelector('.words');
+  // Put paragraph element in the DOM as we are working with it
+  words.appendChild(p);
+  
+  recognition.addEventListener('result', e => {
+    // Map over results to get the nested transcript out of the event
+    // Same as e.results[0][0].transcript; but mapped over since
+    // there may be multiple items in the NodeList
+    const transcript = Array.from(e.results)
+      .map(result => result[0])
+      .map(result => result.transcript)
+      .join('');
+      
+    console.log(transcript); 
+       
+    // Populate our DOM paragraphs with transcript content
+    p.textContent = transcript;
+    if (e.results[0].isFinal) {
+      p = document.createElement('p');
+      words.appendChild(p);
+    }
+    
+    if (transcript.includes('unicorn')) {
+      p.textContent = "🦄🦄🦄🦄🦄🦄🦄🦄🦄🦄🦄";
+    }
+  });
+  
+  
+  // the 'result' eventListener stops running after one listening,
+  // so we add another eventListener listening for 'end' and run
+  // recognition.start again.
+  recognition.addEventListener('end', recognition.start);
+  recognition.start();
+  
 
 </script>
 
