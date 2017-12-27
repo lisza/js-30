@@ -58,6 +58,15 @@
     /*Compass: https://thenounproject.com/search/?q=compass&i=592352*/
   </style>
   <script>
+    const arrow = document.querySelector('.arrow');
+    const speed = document.querySelector('.speed');
+    
+    // getPosition will give us position once, watchPosition will supply
+    // position over time
+    navigator.geolocation.watchPosition(data => {
+      console.log(data);
+    });
+    
   </script>
 </body>
 </html>
