@@ -59,12 +59,18 @@
   </style>
   <script>
     const arrow = document.querySelector('.arrow');
-    const speed = document.querySelector('.speed');
+    const speed = document.querySelector('.speed-value');
     
     // getPosition will give us position once, watchPosition will supply
     // position over time
-    navigator.geolocation.watchPosition(data => {
+    navigator.geolocation.watchPosition((data) => {
       console.log(data);
+      // display speed
+      speed.textContent = data.coords.speed;
+      arrow.style.transform = `rotate(${data.coords.heading}deg)`;
+    }, (err) => {
+      console.log(err);
+      alert('You have to allow location access for this to work');
     });
     
   </script>
