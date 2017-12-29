@@ -27,6 +27,41 @@
 
   <script>
     // 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+    // Get all hoverables or 'triggers'
+    const triggers = document.querySelectorAll('a');
+    // Class of '.highlight' is added to those triggers dynamically.
+    // The width, height, transformX, transformY properties (all) will be CSS transitioned.
+    const highlight = document.createElement('span');
+    highlight.classList.add('highlight');
+    document.body.append(highlight);
+    
+    function highlightLink() {
+      // Get width, height properties
+      const linkCoords = this.getBoundingClientRect();
+      console.log(linkCoords);
+      
+      // Gotta account for scrolling to get the new position
+      // E.g. figure out offset, or as below: see how much was scrolled and add
+      // that number to our coordinates
+      const coords = {
+        width: linkCoords.width,
+        height: linkCoords.height,
+        top: linkCoords.top + window.scrollY,
+        left: linkCoords.left + window.scrollX
+      }
+      
+      // highlight class doesn't have a width and height, so it won't
+      // show up. We use js to determine those and add them to the inline style.
+      highlight.style.width = `${linkCoords.width}px`;
+      highlight.style.height = `${linkCoords.height}px`;
+      // highlight.style.top = `${linkCoords.y}px`;
+      // highlight.style.left = `${linkCoords.x}px`;
+      // Tip: Use transform property instead to make the animation smoother
+      highlight.style.transform = `translate(${coords.left}px, ${coords.top}px)`;      
+    }
+    
+    triggers.forEach(a => a.addEventListener('mouseenter', highlightLink));
+    
   </script>
 </body>
 </html>
