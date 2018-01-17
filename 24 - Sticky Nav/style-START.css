@@ -48,6 +48,18 @@ nav {
   z-index: 1;
 }
 
+/* When an element is fixed, it won't take up space in the document.
+It kinda floats on top instead. So if you make a sticky nav that fixes
+itslef at some point, but was position:relative before,
+the other content might shift around. Solution: offset by the amount
+that the nav took up previously by adding padding to the body. We do that
+programmatically in our script.js, so that it'll keep working if we change
+a font size or nav height or anything down the line. */
+.fixed-nav nav{
+  position: fixed;
+  box-shadow: 0 5px rgba(0,0,0,0.1);
+}
+
 nav ul {
   margin: 0;
   padding:0;

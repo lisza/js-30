@@ -54,6 +54,29 @@
   </div>
 
 <script>
+  const nav = document.querySelector('#main');
+  let topOfNav = nav.offsetTop;
+  
+  function fixNav() {
+    // console.log(topOfNav, window.scrollY);
+    if(window.scrollY >= topOfNav) {
+      // When an element is fixed, it won't take up space in the document.
+      // It kinda floats on top instead. So if you make a sticky nav that fixes
+      // itslef at some point, but was position:relative before,
+      // the other content might shift around. Solution: offset by the amount
+      // that the nav took up previously by adding padding to the body. We do that
+      // programmatically in our script.js, so that it'll keep working if we change
+      // a font size or nav height or anything down the line.
+      document.body.style.paddingTop = `${nav.offsetHeight}px`;
+      document.body.classList.add('fixed-nav');
+    } else {
+      document.body.style.paddingTop = 0;
+      document.body.classList.remove('fixed-nav');
+    }
+  }
+  
+  window.addEventListener('scroll', fixNav);
+  window.addEventListener('resize', () => topOfNav = nav.offsetTop);
 
 </script>
 
