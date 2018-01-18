@@ -38,8 +38,56 @@
 </style>
 
 <button></button>
-<script>
 
+<script>
+  const divs = document.querySelectorAll('div');
+  const button = document.querySelector('button');
+  
+  function logText(e) {
+    console.log(this.classList.value);
+    // e.stopPropagation(); // stop bubbling
+    // console.log(this);
+  }
+  
+  // When clicking on the innermost div, it logs all: three two one.
+  // This illustrates the concept of bubbling. The event bubbles up.
+  // We're only logging the divs here, but it bubbles all the way
+  // to every enclosing element. If we listen to document.body as well,
+  // we'll register a click on one of the inner divs as well.
+  // It'll ripple all the way up always, but we'll only notice when we
+  // add a listener to the higher up element.
+  
+  // What happens:
+  // 1) Capture: Js goes from the top down to the clicked element until it finds it.
+  //    No events have been fired yet. It just capures the visited elements on the way
+  //    to the clicked element and stores them.
+  // 2) Bubble: Js triggers the events as it back up, bottom to top.
+  
+  // Using capture:true in the event listener callback as an option argument,
+  // will cause the events to be fired as their captured, that is on their way down.
+  // the function is run on the way down rather than on the way back up.
+  // By default capture:false is false. 
+  
+  // Use event.stopPropagation() in the callback function itself to prevent bubbling.
+  // Now only the clicked element will trigger, the event won't bubble up/ propagate.
+  
+  // document.body.addEventListener('click', logText);
+  divs.forEach(div => div.addEventListener('click', logText, {
+    capture: false,
+    once: true // Listens for click, then unbinds itself. Unbinding is the same as
+    // div.removeEventListener('click', logText)
+    // Listens for a click once, then unbinds itself
+  }));
+  
+  // If you want to prevent someone from clicking a button multiple times,
+  // add third argument option {once: true} 
+  // useful e.g. for store checkouts and the like
+  button.addEventListener('click', () => {
+    console.log("Click!!!!!!");
+  }, {
+    once: true
+  })
+  
 </script>
 </body>
 </html>
