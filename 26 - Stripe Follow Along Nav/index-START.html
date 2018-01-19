@@ -214,6 +214,28 @@
 </style>
 
 <script>
+  const triggers = document.querySelectorAll('.cool > li');
+  const background = document.querySelector('.dropdownBackground');
+  const nav = document.querySelector('.top');
+  
+  // Whenever we hover over <li>, find the dropdown inside of it and display it
+  function handleEnter() {
+    console.log(this);
+    this.classList.add('trigger-enter');
+    this.classList.add('trigger-enter-active');
+  }
+  
+  function handleLeave() {
+    console.log("Leeeavvee");
+    this.classList.remove('trigger-enter');
+    this.classList.remove('trigger-enter-active');
+  }
+  
+  triggers.forEach(trigger => {
+    trigger.addEventListener('mouseenter', handleEnter);
+    trigger.addEventListener('mouseleave', handleLeave);
+  })
+  
 </script>
 
 </body>
